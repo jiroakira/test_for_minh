@@ -1,0 +1,264 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<!--begin::Content-->
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Subheader-->
+    <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
+        <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <!--begin::Page Heading-->
+                <div class="d-flex align-items-baseline flex-wrap mr-5">
+                    <!--begin::Page Title-->
+                    <h5 class="text-dark font-weight-bold my-1 mr-5">Thêm Mới Dịch Vụ Khám</h5>
+                    <!--end::Page Title-->
+                    <!--begin::Breadcrumb-->
+                    <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                        <li class="breadcrumb-item">
+                            <a href="{% url 'danh_sach_dich_vu_kham' %}" class="text-muted">Danh Sách Dịch Vụ Khám</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="javascript:;" class="text-muted">Thêm Mới</a>
+                        </li>
+                    </ul>
+                    <!--end::Breadcrumb-->
+                </div>
+                <!--end::Page Heading-->
+            </div>
+            <!--end::Info-->
+           
+        </div>
+    </div>
+    <!--end::Subheader-->
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <!--begin::Card-->
+            <div class="card card-custom">
+                <div class="card-header flex-wrap border-0 pt-6 pb-0">
+                    <div class="card-title">
+                        <h3 class="card-label">Biểu Mẫu Thêm Mới</h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-6">
+                            <!--begin::Form-->
+                            <form id="kt_form_1">
+                                <div class="form-group">
+                                    <label>Mã Dịch Vụ Kiểm Tra <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control input" id="maDvkt" name="text" placeholder="Nhập mã dvkt" />
+                                </div>
+                                <div class="form-group">
+                                    <label>Tên Dịch Vụ Kiểm Tra <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control input" id="tenDvkt" name="text" placeholder="Nhập tên dvkt" />
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-lg-3">
+                                        <label>Mã Giá <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control input" id="maGia" name="text" placeholder="Nhập mã giá" />
+                                    </div>
+                                    
+                                    <div class="col-lg-9">
+                                        <label>Đơn Giá <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control input" id="donGia" name="text" placeholder="Nhập đơn giá" />
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-lg-6">
+                                        <label>Quyết Định <span class="text-danger">*</span></label>
+                                        <input class="form-control input" id="quyetDinh" type="text" placeholder="Giá nhập" name="text"/>
+                                    </div>
+                            
+                                    <div class="col-lg-6">
+                                        <label>Công Bố <span class="text-danger">*</span></label>
+                                        <input class="form-control input" id="congBo" type="text" placeholder="Giá bán" name="text"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label>Bác Sĩ Phụ Trách <span class="text-danger">*</span></label>
+                                        <select id="selectBacSi" class="form-control">
+                                            {% for co in bac_si %}
+                                                <option value="{{co.id}}">{{ co.ho_ten }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        {% comment %} <textarea class="form-control" name="memo" id="moTa" placeholder="Thông tin và cách dùng của thuốc" rows="3"></textarea> {% endcomment %}
+                                    </div>
+                                </div>
+                            </form>
+                            <!-- end::Form -->
+                        </div>
+                        <!-- begin::Preview -->
+                        <div class="col-lg-12 col-md-6">
+                            <div class="form-group">
+                                <label><span class="font-weight-bold">Bản xem trước thông tin dịch vụ khám</span></label>
+                                {% comment %} <span class="form-text text-primary maDvkt"></span> {% endcomment %}
+                                <table class="table table-bordered ">
+                                    <thead>
+                                        <th>Tên Dịch Vụ Kiểm Tra</th>
+                                        <th>Đơn Giá</th>
+                                        <th>Quyết Định</th>
+                                        <th>Công Bố</th>
+                                    </thead>
+                                    <tbody>
+                                        <td>
+                                            <span class="form-text text-primary tenDvkt"></span>
+                                        </td>
+                                        <td>
+                                            <span class="form-text text-primary donGia"></span>
+                                        </td>
+                                        <td>
+                                            <span class="form-text text-primary quyetDinh"></span>
+                                        </td>
+                                        <td>
+                                            <span class="form-text text-primary congBo"></span>
+                                        </td>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- end::Preview -->
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-lg-12 ml-lg-auto text-center">
+                            <button type="submit" class="btn btn-primary font-weight-bold mr-2" id="submitData" name="submitButton">Xác nhận</button>
+                            <button type="reset" class="btn btn-light-primary font-weight-bold">Hủy</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end::Card-->
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Entry-->
+</div>
+<!--end::Content-->
+
+{% endblock content %}
+
+{% block scripts %}
+<!--begin::Global Theme Bundle(used by all pages)-->
+<script src="{% static 'assets/plugins/global/plugins.bundle9cd7.js' %} "></script>
+<script src="{% static 'assets/plugins/custom/prismjs/prismjs.bundle9cd7.js' %} "></script>
+<script src="{% static 'assets/js/scripts.bundle9cd7.js' %} "></script>
+<script>var HOST_URL = "http://127.0.0.1:8000";</script>
+
+<!--end::Global Theme Bundle-->
+
+<script>
+// Class definition
+    var KTFormControls = function () {
+        // Private functions
+        var _initPreview = function(){
+            $('.input').keyup(function(){
+                var $this = $(this);
+                $('.'+$this.attr('id')+'').html($this.val());
+            });
+        }
+
+        var _initDemo1 = function () {
+            FormValidation.formValidation(
+                document.getElementById('kt_form_1'),
+                {
+                    fields: {
+                        text: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'Không được để trống'
+                                },
+                            }
+                        },
+                        {% comment %} memo: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'Không được để trống'
+                                },
+                                stringLength: {
+                                    min:10,
+                                    max:10000,
+                                }
+                            }
+                        }, {% endcomment %}
+                    },
+
+                    plugins: { //Learn more: https://formvalidation.io/guide/plugins
+                        trigger: new FormValidation.plugins.Trigger(),
+                        // Bootstrap Framework Integration
+                        bootstrap: new FormValidation.plugins.Bootstrap(),
+                        // Validate fields when clicking the Submit button
+                        submitButton: new FormValidation.plugins.SubmitButton(),
+                        // Submit the form when all fields are valid
+                        defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+                    }
+                }
+            );
+        }
+
+        var _formAddThuocSubmit = function () {
+            var formData = new FormData();
+            $(document).on("click", "#submitData", function(){
+                formData.append('ten_thuoc', $("#tenThuoc").val())
+                formData.append('ma_thuoc', $("#maThuoc").val())
+                formData.append('gia_nhap', $("#giaNhap").val())
+                formData.append('gia_ban', $("#giaBan").val())
+                formData.append('mo_ta', $("#moTa").val())
+                formData.append('tac_dung_phu', $("#tacDungPhu").val())
+                formData.append('quy_cach_dong_goi', $("#quyCachDongGoi").val())
+                formData.append('so_luong_nhap_lan_dau', $("#soLuongNhapLanDau").val())
+                formData.append('id_cong_ty', $("#selectCongty").val())
+                formData.append('csrfmiddlewaretoken', '{{ csrf_token }}')
+
+                console.log($("#selectCongty").val())
+                console.log(formData)
+
+                $.ajax({
+                    type       : "POST",
+                    url        : "{% url 'them_thuoc_api' %}",
+                    data       : formData,
+                    cache      : false,
+                    processData: false,
+                    contentType: false,
+                    success: function(response){
+                        if (response.status == 400) {
+                            toastr.warning(response.message, "Xảy Ra Lỗi")
+                        } else if (response.status == 409) {
+                            toastr.info(response.message, "Lỗi")
+                        } else {
+                            toastr.success(response.message, "Thành Công")
+                        }
+
+                    },
+                    error: function(response){
+                        console.log(response.message)
+                        toastr.warning(response.message)
+                        {% comment %} alert(response.status); {% endcomment %}
+                        $('#addServicesModal').modal('hide');
+                    }
+                })
+            })
+        }
+
+        return {
+            // public functions
+            init: function() {
+                _initPreview();
+                _initDemo1();
+                _formAddThuocSubmit();
+            }
+        };
+    }();
+
+    jQuery(document).ready(function() {
+        KTFormControls.init();
+    });
+</script>
+{% endblock scripts %}

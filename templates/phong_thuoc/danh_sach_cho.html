@@ -1,0 +1,361 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<!--begin::Content-->
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Subheader-->
+    <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
+        <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <!--begin::Page Heading-->
+                <div class="d-flex align-items-baseline flex-wrap mr-5">
+                    <!--begin::Page Title-->
+                    <h5 class="text-dark font-weight-bold my-1 mr-5">Phòng Thuốc</h5>
+                    <!--end::Page Title-->
+                    <!--begin::Breadcrumb-->
+                    <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                        <li class="breadcrumb-item">
+                            <a href="#" class="text-muted">Danh Sách Chờ Lấy Thuốc</a>
+                        </li>
+                    </ul>
+                    <!--end::Breadcrumb-->
+                </div>
+                <!--end::Page Heading-->
+            </div>
+            <!--end::Info-->
+            <!--begin::Toolbar-->
+            <div class="d-flex align-items-center">
+                <!--begin::Actions-->
+                <a href="#" class="btn btn-light-primary font-weight-bolder btn-sm">Actions</a>
+                <!--end::Actions-->
+                <!--begin::Dropdown-->
+                <div class="dropdown dropdown-inline" data-toggle="tooltip" title="Quick actions" data-placement="left">
+                    <a href="#" class="btn btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="svg-icon svg-icon-success svg-icon-2x">
+                            <!--begin::Svg Icon | path:/metronic/theme/html/demo1/dist/assets/media/svg/icons/Files/File-plus.svg-->
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <polygon points="0 0 24 0 24 24 0 24" />
+                                    <path d="M5.85714286,2 L13.7364114,2 C14.0910962,2 14.4343066,2.12568431 14.7051108,2.35473959 L19.4686994,6.3839416 C19.8056532,6.66894833 20,7.08787823 20,7.52920201 L20,20.0833333 C20,21.8738751 19.9795521,22 18.1428571,22 L5.85714286,22 C4.02044787,22 4,21.8738751 4,20.0833333 L4,3.91666667 C4,2.12612489 4.02044787,2 5.85714286,2 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" />
+                                    <path d="M11,14 L9,14 C8.44771525,14 8,13.5522847 8,13 C8,12.4477153 8.44771525,12 9,12 L11,12 L11,10 C11,9.44771525 11.4477153,9 12,9 C12.5522847,9 13,9.44771525 13,10 L13,12 L15,12 C15.5522847,12 16,12.4477153 16,13 C16,13.5522847 15.5522847,14 15,14 L13,14 L13,16 C13,16.5522847 12.5522847,17 12,17 C11.4477153,17 11,16.5522847 11,16 L11,14 Z" fill="#000000" />
+                                </g>
+                            </svg>
+                            <!--end::Svg Icon-->
+                        </span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-md dropdown-menu-right p-0 m-0">
+                        <!--begin::Navigation-->
+                        <ul class="navi navi-hover">
+                            <li class="navi-header font-weight-bold py-4">
+                                <span class="font-size-lg">Choose Label:</span>
+                                <i class="flaticon2-information icon-md text-muted" data-toggle="tooltip" data-placement="right" title="Click to learn more..."></i>
+                            </li>
+                            <li class="navi-separator mb-3 opacity-70"></li>
+                            <li class="navi-item">
+                                <a href="#" class="navi-link">
+                                    <span class="navi-text">
+                                        <span class="label label-xl label-inline label-light-success">Customer</span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="navi-item">
+                                <a href="#" class="navi-link">
+                                    <span class="navi-text">
+                                        <span class="label label-xl label-inline label-light-danger">Partner</span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="navi-item">
+                                <a href="#" class="navi-link">
+                                    <span class="navi-text">
+                                        <span class="label label-xl label-inline label-light-warning">Suplier</span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="navi-item">
+                                <a href="#" class="navi-link">
+                                    <span class="navi-text">
+                                        <span class="label label-xl label-inline label-light-primary">Member</span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="navi-item">
+                                <a href="#" class="navi-link">
+                                    <span class="navi-text">
+                                        <span class="label label-xl label-inline label-light-dark">Staff</span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="navi-separator mt-3 opacity-70"></li>
+                            <li class="navi-footer py-4">
+                                <a class="btn btn-clean font-weight-bold btn-sm" href="#">
+                                <i class="ki ki-plus icon-sm"></i>Add new</a>
+                            </li>
+                        </ul>
+                        <!--end::Navigation-->
+                    </div>
+                </div>
+                <!--end::Dropdown-->
+            </div>
+            <!--end::Toolbar-->
+        </div>
+    </div>
+    <!--end::Subheader-->
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <!--begin::Card-->
+            <div class="card card-custom">
+                <div class="card-header flex-wrap border-0 pt-6 pb-0">
+                    <div class="card-title">
+                        <h3 class="card-label">Danh Sách Chờ Lấy Thuốc
+                        </h3>
+                    </div>
+                    <div class="card-toolbar">
+                        
+                        <!--begin::Button-->
+                        <a href="#" class="btn btn-primary font-weight-bolder" id="btn-reload">
+                            <span class="svg-icon svg-icon-md">
+                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                        <g>
+                                            <polygon points="0 0 24 0 24 24 0 24"/>
+                                        </g>
+                                        <path d="M12,4 L12,6 C8.6862915,6 6,8.6862915 6,12 C6,15.3137085 8.6862915,18 12,18 C15.3137085,18 18,15.3137085 18,12 C18,10.9603196 17.7360885,9.96126435 17.2402578,9.07513926 L18.9856052,8.09853149 C19.6473536,9.28117708 20,10.6161442 20,12 C20,16.418278 16.418278,20 12,20 C7.581722,20 4,16.418278 4,12 C4,7.581722 7.581722,4 12,4 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" transform="translate(12.000000, 12.000000) scale(-1, 1) translate(-12.000000, -12.000000) "/>
+                                    </g>
+                                </svg><!--end::Svg Icon-->
+                            </span>
+                            Tải Lại
+                        </a>
+                        <!--end::Button-->
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!--begin::Search Form-->
+                    <div class="mb-7">
+                        <div class="row align-items-center">
+                            <div class="col-lg-9 col-xl-8">
+                                <div class="row align-items-center">
+                                    <div class="col-md-6 my-2 my-md-0">
+                                        <div class="input-icon">
+                                            <input type="text" class="form-control" placeholder="Tìm kiếm..." id="kt_datatable_search_query" />
+                                            <span>
+                                                <i class="flaticon2-search-1 text-muted"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 my-2 my-md-0">
+                                        <div class="d-flex align-items-center">
+                                            <label class="mr-3 mb-0 d-none d-md-block">Trạng Thái:</label>
+                                            <select class="form-control" id="kt_datatable_search_status">
+                                                <option value="">Tất Cả</option>
+                                                {% for trang_thai in trang_thai %}
+                                                    <option value="{{ trang_thai.id }}">{{ trang_thai.trang_thai_don_thuoc }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end::Search Form-->
+                    <!--begin: Datatable-->
+                    <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable"></div>
+                    <!--end: Datatable-->
+                </div>
+            </div>
+            <!--end::Card-->
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Entry-->
+</div>
+<!--end::Content-->
+
+{% endblock content %}
+
+{% block scripts %}
+<script>var HOST_URL = "http://127.0.0.1:8000";</script>
+{% comment %} <script>var HOST_URL = "https://preview.keenthemes.com/metronic/theme/html/tools/preview";</script> {% endcomment %}
+<!--begin::Global Theme Bundle(used by all pages)-->
+<script src="{% static 'assets/plugins/global/plugins.bundle9cd7.js' %} "></script>
+<script src="{% static 'assets/plugins/custom/prismjs/prismjs.bundle9cd7.js' %} "></script>
+<script src="{% static 'assets/js/scripts.bundle9cd7.js' %} "></script>
+<!--end::Global Theme Bundle-->
+
+<script>
+"use strict";
+// Class definition
+
+var KTDatatableRemoteAjaxDemo = function() {
+    // Private functions
+
+    var demo = function() {
+
+        var datatable = $('#kt_datatable').KTDatatable({
+            // datasource definition
+            data: {
+                type: 'remote',
+                source: {
+                    read: {
+                        method: "GET",
+                        url: HOST_URL + '/api/danh_sach_hoa_don_thuoc/',
+                        // sample custom headers
+                        // headers: {'x-my-custom-header': 'some value', 'x-test-header': 'the value'},
+                        map: function(raw) {
+                            // sample data mapping
+                            var dataSet = raw;
+                            if (typeof raw.data !== 'undefined') {
+                                dataSet = raw.data;
+                            }
+                            return dataSet;
+                        },
+                    },
+                },
+                pageSize: 10,
+                serverPaging: true,
+                //serverFiltering: true,
+                //serverSorting: true,
+            },
+
+            // layout definition
+            layout: {
+                scroll: false,
+                footer: false,
+            },
+
+            // column sorting
+            sortable: true,
+
+            pagination: true,
+
+            search: {
+                input: $('#kt_datatable_search_query'),
+                key: 'generalSearch'
+            },
+
+            // columns definition
+            columns: [{
+                field: 'id',
+                title: '#',
+                sortable: 'asc',
+                width: 30,
+                type: 'number',
+                selector: false,
+                textAlign: 'center',
+            }, {
+                field: 'don_thuoc.ma_hoa_don',
+                title: 'Mã Đơn Thuốc',
+            }, {
+                field: 'benh_nhan.ho_ten',
+                title: 'Bệnh Nhân',
+                
+            }, {
+                field: 'bac_si_ke_don.ho_ten',
+                title: 'Bác Sĩ',
+
+            }, {
+                field: 'thoi_gian_tao',
+                title: 'Thời Gian Tạo',
+                template: function(row) {
+                    var date = new Date(Date.parse(row.thoi_gian_tao))
+
+                    if(!row.thoi_gian_tao){
+                        return '<span class="label font-weight-bold label-lg ' + 'label-light-danger' + ' label-inline">' + 'Chưa Kết Thúc' + '</span>';
+                    } else {
+                        return date.toLocaleString('vi-VN')
+                        //console.log
+                    }
+                }
+            }, {
+                field: 'trang_thai',
+                title: 'Trạng Thái',
+                // callback function support for column rendering
+                template: function(row) {
+                    var status = {
+                        1: {
+                            'title': 'Đã Thanh Toán',
+                            'class': ' label-light-success'
+                        },
+                        2: {
+                            'title': 'Delivered',
+                            'class': ' label-light-danger'
+                        },
+                        3: {
+                            'title': 'Chờ Thanh Toán',
+                            'class': ' label-light-primary'
+                        },
+                        4: {
+                            'title': 'Chờ Thanh Toán',
+                            'class': ' label-light-success'
+                        },
+                        5: {
+                            'title': 'Info',
+                            'class': ' label-light-info'
+                        },
+                        6: {
+                            'title': 'Danger',
+                            'class': ' label-light-danger'
+                        },
+                        7: {
+                            'title': 'Warning',
+                            'class': ' label-light-warning'
+                        },
+                    };
+                    return '<span class="label font-weight-bold label-lg ' + status[row.trang_thai].class + ' label-inline">' + status[row.trang_thai].title + '</span>';
+                },
+            }, {
+                field: 'Actions',
+                title: 'Thao Tác',
+                sortable: false,
+                width: 125,
+                overflow: 'visible',
+                autoHide: false,
+                template: function(row) {
+                    return `
+                        <a href="/phong_thuoc/don_thuoc/${row.id}" class="btn btn-sm btn-clean mr-2" title="Xem đơn thuốc">
+                            Xem
+                        </a>
+                    `;
+                },
+            }],
+
+        });
+
+        $('#btn-reload').on('click', function() {
+			// datatable.reload();
+			$('#kt_datatable').KTDatatable('reload');
+		});
+
+		$('#kt_datatable_search_status').on('change', function() {
+            datatable.search($(this).val().toLowerCase(), 'Status');
+        });
+
+        $('#kt_datatable_search_type').on('change', function() {
+            datatable.search($(this).val().toLowerCase(), 'Type');
+        });
+
+        $('#kt_datatable_search_status, #kt_datatable_search_type').selectpicker();
+    };
+
+
+    return {
+        // public functions
+        init: function() {
+            demo();
+        },
+    };
+}();
+
+jQuery(document).ready(function() {
+    KTDatatableRemoteAjaxDemo.init();
+});
+
+</script>
+
+{% endblock scripts %}

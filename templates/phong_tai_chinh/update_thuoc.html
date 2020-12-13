@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% load widget_tweaks %}
+
+{% block content %}
+<!--begin::Content-->
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Subheader-->
+    <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
+        <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <!--begin::Page Heading-->
+                <div class="d-flex align-items-baseline flex-wrap mr-5">
+                    <!--begin::Page Title-->
+                    <h5 class="text-dark font-weight-bold my-1 mr-5">Phòng Tài Chính</h5>
+                    <!--end::Page Title-->
+                    <!--begin::Breadcrumb-->
+                    <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                        <li class="breadcrumb-item">
+                            <a href="#" class="text-muted">Thêm mới thuốc</a>
+                        </li>
+                    </ul>
+                    <!--end::Breadcrumb-->
+                </div>
+                <!--end::Page Heading-->
+            </div>
+            <!--end::Info-->
+        </div>
+    </div>
+    <!--end::Subheader-->
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <!--begin::Card-->
+            <div class="card card-custom">
+                <div class="card-header pb-0">
+                    <div class="card-title">
+                        <h class="card-label">
+                            Cập nhật thông tin thuốc
+                        </h1>
+                    </div>
+                </div>
+                <!--begin::Form-->
+                <form class="form" id="kt_form_1">
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <label>Nguồn cung cấp thuốc *</label>
+                                {{ form.id_cong_ty|attr:"class:form-control"|attr:"name:id_cong_ty" }}
+                                
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <label>Tên thuốc *</label>
+                                {{ form.ten_thuoc|attr:"class:form-control"|attr:"name:ten_thuoc" }}
+                                {% comment %} <input type="text" class="form-control" id="tenThuoc" name="text" placeholder="Nhập tên thuốc" /> {% endcomment %}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-lg-6">
+                                <label>Giá nhập *</label>
+                                {{ form.gia_mua|attr:"class:form-control"|attr:"name:gia_mua" }}
+                                {% comment %} <input class="form-control" id="giaNhap" type="text" placeholder="Giá nhập" name="text"/> {% endcomment %}
+                            </div>
+                       
+                            <div class="col-lg-6">
+                                <label>Giá bán *</label>
+                                {{ form.gia_ban|attr:"class:form-control"|attr:"name:gia_ban" }}
+                                {% comment %} <input class="form-control" id="giaBan" type="text" placeholder="Giá bán" name="text"/> {% endcomment %}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <label>Mô tả *</label>
+                                {{form.mo_ta|attr:"class:form-control"|attr:"name:mo_ta"|attr:"rows:3"}}
+                                {% comment %} <textarea class="form-control" name="memo" id="moTa" placeholder="Thông tin và cách dùng của thuốc" rows="3"></textarea> {% endcomment %}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <label>Tác dụng phụ *</label>
+                                {{form.tac_dung_phu|attr:"class:form-control"|attr:"name:tac_dung_phu"|attr:"rows:3"}}
+                                {% comment %} <textarea class="form-control" name="memo" id="tacDungPhu" placeholder="Tác dụng phụ của thuốc" rows="2"></textarea> {% endcomment %}
+                                {% comment %} <input type="text" class="form-control" name="text" placeholder="Tác dụng phụ của thuốc" /> {% endcomment %}
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-lg-6">
+                                <label>Quy cách đóng gói *</label>
+                                {{form.quy_cach|attr:"class:form-control"|attr:"name:quy_cach"}}
+                                {% comment %} <input type="text" class="form-control" id="quyCachDongGoi" name="text" /> {% endcomment %}
+                            </div>
+
+                            <div class="col-lg-6">
+                                <label>Số lượng khả dụng *</label>
+                                {{form.so_luong_kha_dung|attr:"class:form-control"|attr:"name:so_luong_kha_dung"}}
+                                {% comment %} <input type="text" class="form-control" name="text" id="soLuongNhapLanDau" placeholder="Số lượng đầu tiên khi nhập thuốc về" /> {% endcomment %}
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-lg-12 ml-lg-auto text-center">
+                                <button type="button" data-id="{{ id_thuoc }}" class="btn btn-primary font-weight-bold mr-2" id="submitData" name="submitButton">Xác nhận</button>
+                                <button type="reset" class="btn btn-light-primary font-weight-bold">Hủy</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!--end::Form-->
+            </div>
+        </div>
+    </div>
+    <!--end::Entry-->
+</div>
+<!--end::Content-->
+{% endblock content %}
+
+{% block scripts %}
+<script>var HOST_URL = "http://127.0.0.1:8000";</script>
+
+<script src="{% static 'assets/plugins/global/plugins.bundle9cd7.js' %} "></script>
+<script src="{% static 'assets/plugins/custom/prismjs/prismjs.bundle9cd7.js' %} "></script>
+<script src="{% static 'assets/js/scripts.bunsdle9cd7.js' %} "></script>
+
+{% comment %} <script src="{% static 'assets/js/pages/crud/forms/validation/form-controls9cd7.js' %}"></script> {% endcomment %}
+{% comment %} <script src="{% static 'assets/js/pages/crud/forms/widgets/input-mask9cd7.js' %}"></script> {% endcomment %}
+
+<script>
+    $('#kt_form_1').on('click', '#submitData', function(){
+        var id_thuoc = $(this).data('id')
+        var id = $("#kt_form_1").find(":selected").val()
+
+        var formData = new FormData();  
+        $("#kt_form_1").find("input").each(function(){
+            formData.append($(this).attr("name"), $(this).val())
+        });
+
+        $("#kt_form_1").find("textarea").each(function(){
+            formData.append($(this).attr("name"), $(this).val())
+        });
+
+        formData.append('id_thuoc', id_thuoc)
+        formData.append('id_cong_ty', id)
+        formData.append('csrfmiddlewaretoken', '{{ csrf_token }}')
+
+        $.ajax({
+            type: "POST",
+            url: "{% url 'update_thuoc' %}",
+            data: formData,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function(response){
+                alert('thanhcong')
+            },
+            error: function(response){
+                console.log("error")
+            }
+        })
+    })
+    
+</script>
+{% endblock scripts %}
