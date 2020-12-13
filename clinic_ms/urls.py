@@ -18,12 +18,13 @@ from django.urls import path, include
 from rest_framework_simplejwt import views as jwt_views
 from django.conf import settings
 from django.conf.urls.static import static
-from clinic.api import DangKiAPI
+from clinic.api import DangKiAPI, DangNhapAPI
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('api/dang_nhap/', jwt_views.TokenObtainPairView.as_view(), name ='token_obtain_pair'),
+    # path('api/dang_nhap/', jwt_views.TokenObtainPairView.as_view(), name ='token_obtain_pair'),
+    path('api/dang_nhap/', DangNhapAPI.as_view(), name='dang_nhap'),
     path('api/dang_ki/', DangKiAPI.as_view(), name='dang_ki'),
     path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name ='token_refresh'),
     path('', include('clinic.urls')),

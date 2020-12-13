@@ -97,7 +97,7 @@ def index(request):
             past_events.append(lich)
 
 
-    starting_day = datetime.now() - timedelta(days=30)
+    starting_day = datetime.now() - timedelta(days=7)
 
     user_data = User.objects.filter(thoi_gian_tao__gt=starting_day).annotate(day=TruncDay("thoi_gian_tao")).values("day").annotate(c=Count("id"))
     users = [x["c"] for x in user_data]
@@ -106,6 +106,10 @@ def index(request):
 
     user_trong_ngay = User.objects.filter(thoi_gian_tao__gte=today_start, thoi_gian_tao__lt=today_end)
 
+    hoa_don_chuoi_kham = HoaDonChuoiKham.objects.filter(thoi_gian_tao__gt=starting_day).annotate(day=TruncDay("thoi_gian_tao")).values("day").annotate(c=Count("id")).annotate(total_spent=Sum(F("tong_tien")))
+    tong_tien = [str(x['total_spent']) for x in hoa_don_chuoi_kham]
+    days = [x["day"].strftime("%Y-%m-%d") for x in hoa_don_chuoi_kham ]
+    
     data = {
         'user': request.user,
         # 'tong_so_benh_nhan': tong_so_benh_nhan,
@@ -123,6 +127,8 @@ def index(request):
         'danh_sach_dich_vu': danh_sach_dich_vu,
         'nguoi_dung': nguoi_dung,
         'user_trong_ngay': user_trong_ngay,
+        'tong_tien_chuoi_kham': tong_tien, 
+        'thoi_gian_chuoi_kham': days,
 
     }
     return render(request, 'index.html', context=data)
@@ -763,10 +769,7 @@ def hoa_don_thuoc(request, **kwargs):
 
     tong_tien = []
     for thuoc_instance in danh_sach_thuoc:
-        if thuoc_instance.bao_hiem:
-            gia = thuoc_instance.thuoc.gia_thuoc.gia * decimal.Decimal((1-(thuoc_instance.thuoc.bao_hiem_thuoc.muc_bao_hiem / 100))) * thuoc_instance.so_luong
-        else:
-            gia = thuoc_instance.thuoc.gia_thuoc.gia * thuoc_instance.so_luong
+        gia = int(thuoc_instance.thuoc.don_gia_tt) * thuoc_instance.so_luong
         tong_tien.append(gia)
     
     total_spent = sum(tong_tien)
@@ -1551,4 +1554,3 @@ def update_phong_chuc_nang(request, **kwargs):
     }
     return render(request, 'le_tan/update_phong_chuc_nang.html', context=data)
 
-    return render(request, 'le_tan/update_phong_chuc_nang.html')

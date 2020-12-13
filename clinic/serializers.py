@@ -6,7 +6,7 @@ from django.http.request import validate_host
 from rest_framework import fields, serializers
 from django.contrib.auth import get_user_model
 from .models import (
-    DichVuKham, FileKetQua, FileKetQuaChuyenKhoa, KetQuaChuyenKhoa, KetQuaTongQuat, 
+    DichVuKham, FileKetQua, FileKetQuaChuyenKhoa, FileKetQuaTongQuat, KetQuaChuyenKhoa, KetQuaTongQuat, 
     LichHenKham, PhanKhoaKham, 
     PhongChucNang, 
     ProfilePhongChucNang, TrangThaiChuoiKham, TrangThaiKhoaKham, 
@@ -41,13 +41,19 @@ class DangKiSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('so_dien_thoai', 'password', 'ho_ten')
+        fields = ('so_dien_thoai', 'password', 'ho_ten', 'cmnd_cccd', 'dia_chi')
         extra_kwargs = {
             'password': {'write_only': True},
         }
     
     def create(self, validated_data):
-        user = User.objects.create_user(ho_ten = validated_data['ho_ten'], so_dien_thoai = validated_data['so_dien_thoai'], password = validated_data['password'])
+        user = User.objects.create_user(
+            ho_ten = validated_data['ho_ten'], 
+            so_dien_thoai = validated_data['so_dien_thoai'], 
+            password = validated_data['password'],
+            cmnd_cccd = validated_data['cmnd_cccd'], 
+            dia_chi = validated_data['dia_chi']
+        )
         return user
 
 class DichVuKhamSerializer(serializers.ModelSerializer):
@@ -86,9 +92,16 @@ class ProfilePhongChucNangSerializer(serializers.ModelSerializer):
         model = ProfilePhongChucNang
         fields = '__all__'
 
+class TrangThaiLichHenSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TrangThaiLichHen
+        fields = '__all__'
+
+
 class LichHenKhamSerializer(serializers.ModelSerializer):
     benh_nhan = UserSerializer()
     nguoi_phu_trach = UserSerializer()
+    trang_thai = TrangThaiLichHenSerializer()
     class Meta:
         model = LichHenKham
         fields = '__all__'
@@ -261,6 +274,88 @@ class DichVuKhamSerializer(serializers.ModelSerializer):
         model = DichVuKham
         fields = '__all__'
 
-# class DanhSachPhongChucNang(APIView);
-# class DanhSachKetQuaChuyenKhoa(APIView):
-#     ket_qua_chuyen_khoa = KetQuaChuyenKhoaSerializer
+
+class FileKetQuaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FileKetQua
+        fields = ('id', 'file', 'thoi_gian_tao')
+
+class FileKetQuaChuyenKhoaSerializer(serializers.ModelSerializer):
+    file_ket_qua = FileKetQuaSerializer(source='file')
+    class Meta:
+        model = FileKetQuaChuyenKhoa
+        fields = ('id', 'file_ket_qua')
+
+class KetQuaChuyenKhoaSerializer(serializers.ModelSerializer):
+    file_chuyen_khoa = FileKetQuaChuyenKhoaSerializer(many=True, source='file_ket_qua_chuyen_khoa')
+    class Meta:
+        model = KetQuaChuyenKhoa
+        fields = ('id', 'ma_ket_qua', 'mo_ta', 'ket_luan', 'file_chuyen_khoa')
+
+class FileKetQuaTongQuatSerializer(serializers.ModelSerializer):
+    file_ket_qua = FileKetQuaSerializer(source='file')
+    class Meta:
+        model = FileKetQuaTongQuat
+        fields = ('id', 'file_ket_qua')
+
+class KetQuaTongQuatSerializer(serializers.ModelSerializer):
+    file_tong_quat = FileKetQuaTongQuatSerializer(source='file_ket_qua_tong_quat', many=True)
+    kq_chuyen_khoa = KetQuaChuyenKhoaSerializer(source='ket_qua_chuyen_khoa', many=True)
+    class Meta:
+        model = KetQuaTongQuat
+        fields = ('id', 'ma_ket_qua', 'mo_ta', 'ket_luan', 'file_tong_quat', 'kq_chuyen_khoa')
+
+class DonThuocSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DonThuoc
+        fields = '__all__'
+
+class DichVuKhamPhanKhoaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DichVuKham
+        fields = ('id', 'ma_dvkt', 'ten_dvkt', 'ma_cosokcb')
+
+class DanhSachPhanKhoaSerializer(serializers.ModelSerializer):
+    dich_vu_kham = DichVuKhamPhanKhoaSerializer()
+    class Meta:
+        model = PhanKhoaKham
+        fields = ('id', 'priority', 'dich_vu_kham')
+
+class UserSerializerSimple(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'ho_ten', 'so_dien_thoai')
+
+
+class ChuoiKhamUserSerializer(serializers.ModelSerializer):
+    bac_si_dam_nhan = UserSerializerSimple()
+    class Meta:
+        model = ChuoiKham
+        fields = ('id', 'bac_si_dam_nhan', 'thoi_gian_bat_dau', 'thoi_gian_ket_thuc')
+
+class LichHenKhamUserSerializer(serializers.ModelSerializer):
+    trang_thai = TrangThaiLichHenSerializer()
+    chuoi_kham = ChuoiKhamUserSerializer(source='danh_sach_chuoi_kham', many=True)
+    class Meta:
+        model = LichHenKham
+        fields = ('id', 'thoi_gian_bat_dau', 'thoi_gian_ket_thuc', 'trang_thai', 'chuoi_kham')
+
+
+class LichHenKhamSerializerSimple(serializers.ModelSerializer):
+    trang_thai = TrangThaiLichHenSerializer()
+    class Meta:
+        model = LichHenKham
+        fields = ('id', 'thoi_gian_bat_dau', 'thoi_gian_ket_thuc', 'trang_thai')
+
+class BookLichHenKhamSerializer(serializers.Serializer):
+    benh_nhan = serializers.CharField()
+    thoi_gian_bat_dau = serializers.CharField()
+    # class Meta:
+    #     model = LichHenKham
+    #     fields = ('benh_nhan', 'thoi_gian_bat_dau')
+
+class DanhSachDonThuocSerializer(serializers.ModelSerializer):
+    bac_si_ke_don = UserSerializerSimple()
+    class Meta:
+        model = DonThuoc
+        fields = ('id', 'ma_don_thuoc', 'bac_si_ke_don')

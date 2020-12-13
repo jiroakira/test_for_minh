@@ -89,7 +89,7 @@
                                     <thead>
                                         <tr>
                                             <th class="pl-0 font-weight-bold text-muted text-uppercase">Tên Thuốc</th>
-                                            <th class="text-right font-weight-bold text-muted text-uppercase">Bảo Hiểm</th>
+                                       
                                             <th class="text-right font-weight-bold text-muted text-uppercase">Áp dụng bảo hiểm</th>
                                             <th class="text-right font-weight-bold text-muted text-uppercase">Đơn giá</th>
                                             <th class="text-right font-weight-bold text-muted text-uppercase">Số lượng</th>
@@ -100,14 +100,15 @@
                                     {% for thuoc in danh_sach_thuoc %}
                                         <tr class="font-weight-boldest font-size-lg">
                                             <td class="pl-0 pt-7">{{ thuoc.thuoc.ten_thuoc }}</td>
-                                            <td class="text-right pt-7">{{ thuoc.thuoc.bao_hiem_thuoc.muc_bao_hiem }} %</td>
+                                           
+                                       
                                             <td class="text-right pt-7">{{ thuoc.bao_hiem }}</td>
-                                            <td class="format-gia text-right pt-7" data-id={{thuoc.gia_ban}}>
-                                                {{ thuoc.gia_ban }}
+                                            <td class="format-gia text-right pt-7" data-id={{thuoc.thuoc.don_gia_tt}}>
+                                                {{ thuoc.thuoc.don_gia_tt }}
                                             </td>
                                             <td class="text-right pt-7">{{ thuoc.so_luong }}</td>
-                                            <td class="format-gia text-danger pr-0 pt-7 text-right" data-id={{thuoc.gia_thuoc_theo_bao_hiem}}>
-                                                {{ thuoc.gia_thuoc_theo_bao_hiem }}
+                                            <td class="format-gia text-danger pr-0 pt-7 text-right" data-id={{thuoc.gia_ban}}>
+                                                {{ thuoc.gia_ban }}
                                             </td>
                                         </tr>
                                     {% endfor %}
@@ -214,12 +215,18 @@
             success: function (response) {
                 if (response.status == 200) {
                     toastr.success(response.message, "Thành Công")
+
+                    setTimeout(function () {
+                        window.location.href = '/phong_tai_chinh/'; 
+                    }, 1500);
+
                 } else if (response.status == 404) {
                     toastr.warning(response.message, "Xảy Ra Lỗi")
                 }
             },
             error: function () {
-                alert();                                                                                                                          
+                toastr.warning("Xảy Ra Lỗi Trong Quá Trình Thanh Toán", "Xảy Ra Lỗi")
+                                                                                                                         
             }
         });
         

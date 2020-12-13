@@ -25,7 +25,18 @@ class ThuocSerializer(serializers.ModelSerializer):
         response['nhom_thau'] = NhomThauSerializer(instance.nhom_thau).data
         return response
 
+# class KeDonThuocSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = KeDonThuoc
+#         fields = '__all__'
+
+class ThuocSerializerSimple(serializers.ModelSerializer):
+    class Meta:
+        model = Thuoc
+        fields = ('id', 'ten_thuoc', 'duong_dung', 'don_vi_tinh')
+
 class KeDonThuocSerializer(serializers.ModelSerializer):
+    thuoc = ThuocSerializerSimple()
     class Meta:
         model = KeDonThuoc
-        fields = '__all__'
+        fields = ('id', 'thuoc', 'so_luong', 'cach_dung', 'ghi_chu')

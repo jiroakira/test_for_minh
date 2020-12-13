@@ -9,9 +9,9 @@ from django.conf.urls import url
 from django.urls import path, include
 from rest_framework import routers
 from .api import (
-    ChuoiKhamNguoiDung, ChuoiKhamViewSet, 
-    DangKiAPI, DanhSachBenhNhan, DanhSachBenhNhanTheoPhong, DanhSachBenhNhanTheoPhongChucNang, DanhSachDichVuKhamTheoPhong, DanhSachDichVuTheoPhongChucNang, DanhSachDoanhThuDichVu, DanhSachDoanhThuThuoc, DanhSachHoaDonDichVu, DanhSachHoaDonThuoc, DanhSachKhamTrongNgay, DanhSachLichHenTheoBenhNhan, DanhSachPhongChucNang, DanhSachThanhToanLamSang, DanhSachThuocTheoCongTy, DieuPhoiPhongChucNangView, FileKetQuaViewSet, KetQuaChuoiKhamBenhNhan, 
-    LichHenKhamViewSet, ListNguoiDungDangKiKham, PhongChucNangTheoDichVu, SetChoThanhToan, SetXacNhanKham, ThongTinBenhNhanTheoMa, ThongTinPhongChucNang, 
+    ChuoiKhamGanNhat, ChuoiKhamNguoiDung, ChuoiKhamViewSet, 
+    DangKiAPI, DangKiLichHen, DanhSachBenhNhan, DanhSachBenhNhanTheoPhong, DanhSachBenhNhanTheoPhongChucNang, DanhSachChuoiKhamBenhNhan, DanhSachDichVuKhamTheoPhong, DanhSachDichVuTheoPhongChucNang, DanhSachDoanhThuDichVu, DanhSachDoanhThuThuoc, DanhSachDonThuocBenhNhan, DanhSachHoaDonDichVu, DanhSachHoaDonThuoc, DanhSachKhamTrongNgay, DanhSachLichHenTheoBenhNhan, DanhSachPhongChucNang, DanhSachThanhToanLamSang, DanhSachThuocBenhNhan, DanhSachThuocTheoCongTy, DieuPhoiPhongChucNangView, FileKetQuaViewSet, KetQuaChuoiKhamBenhNhan, 
+    LichHenKhamViewSet, ListNguoiDungDangKiKham, PhanKhoaKhamBenhNhan, PhongChucNangTheoDichVu, SetChoThanhToan, SetXacNhanKham, TatCaLichHenBenhNhan, ThongTinBenhNhanTheoMa, ThongTinPhongChucNang, UserInfor, 
     UserViewSet, 
     DichVuKhamViewSet,
     PhongChucNangViewSet
@@ -101,7 +101,7 @@ urlpatterns = [
     path('api/danh_sach_thuoc_theo_cong_ty/', DanhSachThuocTheoCongTy.as_view(), name='danh_sach_thuoc_theo_cong_ty'),
     path('api/danh_sach_dich_vu_kham_theo_phong/', DanhSachDichVuKhamTheoPhong.as_view(), name='danh_sach_dich_vu_kham_theo_phong'),
     path('api/danh_sach_dich_vu_theo_phong_chuc_nang/', DanhSachDichVuTheoPhongChucNang.as_view(), name='danh_sach_dich_vu_kham_theo_phong_chuc_nang'),
-    path('api/ket_qua_chuoi_kham/', KetQuaChuoiKhamBenhNhan.as_view(), name="ket_qua_chuoi_kham"),
+    # path('api/ket_qua_chuoi_kham/', KetQuaChuoiKhamBenhNhan.as_view(), name="ket_qua_chuoi_kham"),
 
     # path('upload/', include(ajax_router.urls)),
     path('api/danh_sach_thanh_toan/', DanhSachHoaDonDichVu.as_view(), name='danh_sach_thanh_toan'),
@@ -114,6 +114,16 @@ urlpatterns = [
     path('api/danh_sach_benh_nhan/', DanhSachBenhNhan.as_view(), name='danh_sach_benh_nhan'),
     path('api/danh_sach_benh_nhan_theo_thoi_gian/', DanhSachLichHenTheoBenhNhan.as_view(), name='danh_sach_benh_nhan_theo_thoi_gian'),
     path('api/thong_tin_benh_nhan_theo_ma/', ThongTinBenhNhanTheoMa.as_view(), name='thong_tin_benh_nhan_thao_ma'),
+
+    path('api/danh_sach_phan_khoa/', PhanKhoaKhamBenhNhan.as_view(), name='danh_sach_phan_khoa'),
+    path('api/benh_nhan/danh_sach_don_thuoc/', DanhSachDonThuocBenhNhan.as_view(), name='danh_sach_don_thuoc_benh_nhan'),
+    path('api/benh_nhan/don_thuoc/', DanhSachThuocBenhNhan.as_view(), name='danh_sach_thuoc_benh_nhan'),
+    path('api/benh_nhan/tat_ca_lich_hen/', TatCaLichHenBenhNhan.as_view(), name='tat_ca_lich_hen'),
+    path('api/benh_nhan/chuoi_kham_gan_nhat/', ChuoiKhamGanNhat.as_view(), name='chuoi_kham_gan_nhat'),
+    path('api/benh_nhan/danh_sach_chuoi_kham/', DanhSachChuoiKhamBenhNhan.as_view(), name='danh_sach_chuoi_kham_benh_nhan'),
+    path('api/benh_nhan/chuoi_kham/ket_qua/', KetQuaChuoiKhamBenhNhan.as_view(), name='ket_qua_chuoi_kham_benh_nhan'),
+    path('api/banh_nhan/dang_ki_lich_hen/', DangKiLichHen.as_view(), name='dang_ki_lich_hen'),
+    path('api/benh_nhan/thong_tin/', UserInfor.as_view(), name='thong_tin_benh_nhan'),
 
     path('api/danh_sach_benh_nhan_theo_phong_chuc_nang/', DanhSachBenhNhanTheoPhongChucNang.as_view(), name="danh_sach_benh_nhan_theo_phong_chuc_nang"),
     path('api/bat_dau_chuoi_kham/', BatDauChuoiKhamToggle.as_view(), name='bat_dau_chuoi_kham_api'),

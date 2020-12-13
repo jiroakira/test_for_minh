@@ -197,8 +197,8 @@ class KeDonThuoc(models.Model):
         return tong_tien
 
     def gia_ban(self):
-        gia_ban = self.thuoc.gia_thuoc.gia
-        tong_tien = gia_ban * self.so_luong
+        gia_ban = self.thuoc.don_gia_tt
+        tong_tien = int(gia_ban) * self.so_luong
         return tong_tien
 
 class ThuocLog(models.Model):

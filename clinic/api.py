@@ -15,7 +15,7 @@ from rest_framework.views import APIView
 from clinic.models import DichVuKham, FileKetQua, KetQuaTongQuat, LichHenKham, PhanKhoaKham, PhongChucNang, TrangThaiChuoiKham, TrangThaiKhoaKham, TrangThaiLichHen, ChuoiKham, KetQuaChuyenKhoa
 from rest_framework import viewsets
 from django.contrib.auth import authenticate, get_user_model
-from .serializers import DangKiSerializer, DichVuKhamSerializer, FileKetQuaSerializer, HoaDonChuoiKhamSerializerSimple, HoaDonThuocSerializer, HoaDonThuocSerializerSimple, KetQuaTongQuatSerializer, LichHenKhamSerializer, PhanKhoaKhamDichVuSerializer, PhanKhoaKhamSerializer, PhongChucNangSerializer, PhongChucNangSerializerSimple, ProfilePhongChucNangSerializer, TrangThaiLichHenSerializer, UserLoginSerializer, UserSerializer, ChuoiKhamSerializer, KetQuaChuyenKhoaSerializer, ChuoiKhamSerializerSimple
+from .serializers import BookLichHenKhamSerializer, DangKiSerializer, DanhSachDonThuocSerializer, DanhSachPhanKhoaSerializer, DichVuKhamSerializer, DonThuocSerializer, FileKetQuaSerializer, HoaDonChuoiKhamSerializerSimple, HoaDonThuocSerializer, HoaDonThuocSerializerSimple, KetQuaTongQuatSerializer, LichHenKhamSerializer, LichHenKhamSerializerSimple, LichHenKhamUserSerializer, PhanKhoaKhamDichVuSerializer, PhanKhoaKhamSerializer, PhongChucNangSerializer, PhongChucNangSerializerSimple, ProfilePhongChucNangSerializer, TrangThaiLichHenSerializer, UserLoginSerializer, UserSerializer, ChuoiKhamSerializer, KetQuaChuyenKhoaSerializer, ChuoiKhamSerializerSimple, UserSerializerSimple
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from rest_framework import status
@@ -146,13 +146,17 @@ class DangNhapAPI(views.APIView):
                 so_dien_thoai = serializer.validated_data['so_dien_thoai'],
                 password = serializer.validated_data['password']
             )
+            u = User.objects.get(so_dien_thoai=serializer.validated_data['so_dien_thoai'])
+            user_serializer = UserSerializerSimple(u, context={'request': request})
             if user:
                 refresh = TokenObtainPairSerializer.get_token(user)
                 data = {
                     'refresh': str(refresh),
                     'access': str(refresh.access_token),
                     'access_expires': int(settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'].total_seconds()),
-                    'refresh_expires': int(settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'].total_seconds())
+                    'refresh_expires': int(settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'].total_seconds()),
+                    'user_id': u.id,
+                    'user_data': user_serializer.data
                 }
                 return Response(data, status=status.HTTP_200_OK)
             return Response({
@@ -1096,14 +1100,30 @@ class PhanKhoaKhamBenhNhan(APIView):
         today_start = now.replace(hour=0, minute=0, second=0)
         today_end = tomorrow.replace(hour=0, minute=0, second=0)
         user = User.objects.get(id=user_id)
-        chuoi_kham = ChuoiKham.objects.filter(thoi_gian_tao__lt=today_end, thoi_gian_tao__gte=today_start).get(benh_nhan=user)
-        danh_sach_phan_khoa = chuoi_kham.phan_khoa_kham.all()
-        serializer = DanhSachPhanKhoaSerializer(danh_sach_phan_khoa, many=True, context={'request': request})
-        data = serializer.data
+        
+        chuoi_kham = ChuoiKham.objects.filter(benh_nhan=user, thoi_gian_tao__lt=today_end, thoi_gian_tao__gte=today_start).first()
+        if chuoi_kham:
+            danh_sach_phan_khoa = chuoi_kham.phan_khoa_kham.all()
+            # serializer = DanhSachPhanKhoaSerializer(danh_sach_phan_khoa, many=True, context={'request': request})
+            serializer = DanhSachPhanKhoaSerializer(danh_sach_phan_khoa, many=True, context={'request': request})
+            data = serializer.data
+            response = {
+                'benh_nhan': user_id,
+                'data': data
+            }
+            return Response(response)
+        else:
+            response = {
+                'benh_nhan': user_id,
+                'data': []
+            }
+            Response(response)
+
         response = {
             'benh_nhan': user_id,
-            'data': data
+            'data': []
         }
+
         return Response(response)
  
 class DanhSachChuoiKhamBenhNhan(APIView):
@@ -1117,14 +1137,28 @@ class DanhSachChuoiKhamBenhNhan(APIView):
             'data': serializer.data
         }
         return Response(response)
+
+class ChuoiKhamGanNhat(APIView):
+    def get(self, request, format=None):
+        user_id = self.request.query_params.get('user_id')
+        user = User.objects.get(id=user_id)
+        lich_hen = user.benh_nhan_hen_kham.all().order_by("-thoi_gian_tao")[0]
+        chuoi_kham_gan_nhat = lich_hen.danh_sach_chuoi_kham.all()[0]
+        serializer = ChuoiKhamSerializerSimple(chuoi_kham_gan_nhat, context={'request': request})
+
+        response = {
+            "benh_nhan": user_id,
+            "data": serializer.data,
+        }
+
+        return Response(response)
  
 class KetQuaChuoiKhamBenhNhan(APIView):
     def get(self, request, format=None):
         chuoi_kham_id = self.request.query_params.get('id_chuoi_kham')
         chuoi_kham = ChuoiKham.objects.get(id=chuoi_kham_id)
-        ket_qua_tong_quat = chuoi_kham.ket_qua_tong_quat.all()[0]
-        ket_qua_chuyen_khoa = ket_qua_tong_quat.ket_qua_chuyen_khoa.all()
-        serializer = KetQuaChuyenKhoaSerializer(ket_qua_chuyen_khoa, many=True, context={'request': request})
+        ket_qua_tong_quat = chuoi_kham.ket_qua_tong_quat.all()
+        serializer = KetQuaTongQuatSerializer(ket_qua_tong_quat, many=True, context={'request': request})
         response = {
             'chuoi_kham': chuoi_kham_id,
             'data': serializer.data
@@ -1136,13 +1170,13 @@ class DanhSachDonThuocBenhNhan(APIView):
         user_id = self.request.query_params.get('user_id')
         user = User.objects.get(id = user_id)
         danh_sach_don_thuoc = user.don_thuoc.all()
-        serializer = DonThuocSerializer(danh_sach_don_thuoc, many=True, context={'request': request})
+        serializer = DanhSachDonThuocSerializer(danh_sach_don_thuoc, many=True, context={'request': request})
         response = {
             'benh_nhan': user_id,
             'data': serializer.data
         }
         return Response(response)
-        # return HttpResponse(json.dumps(response), content_type="application/json, charset=utf-8")
+
 class DanhSachThuocBenhNhan(APIView):
     def get(self, request, format=None):
         don_thuoc_id = self.request.query_params.get('don_thuoc_id')
@@ -1160,9 +1194,6 @@ class DichVuKhamTheoPhongChucNang(APIView):
     def get(request, self, format=None):
         phong_chuc_nang = PhongChucNangSerializerSimple()
         dich_vu_kham = DichVuKham.objects.all()
-class LichHenKhamSapToi(APIView):
-    pass
-
 
 class DanhSachBenhNhanTheoPhongChucNang(APIView):
     def get(self, request, format=None):
@@ -1195,3 +1226,119 @@ class DanhSachDichVuTheoPhongChucNang(APIView):
                 "data"  : serializer.data
             }
             return Response(response)
+        
+class LichHenKhamSapToi(APIView):
+    def get(self, request, format=None):
+        user_id = self.request.query_params.get('user_id')
+        user = User.objects.get(id=user_id)
+        now = timezone.now()
+        trang_thai = TrangThaiLichHen.objects.get_or_create(ten_trang_thai="Xác Nhận")[0]
+        try:
+            lich_hen_kham = LichHenKham.objects.filter(benh_nhan=user).filter(trang_thai=trang_thai).annotate(timediff=F('thoi_gian_bat_dau')).order_by('timediff')[0]
+            
+            if lich_hen_kham:
+                # print(lich_hen_kham.thoi_gian_bat_dau)
+                # if lich_hen_kham.thoi_gian_bat_dau <= now:
+                #    return Response({'data': []})
+                serializer = LichHenKhamSerializer(lich_hen_kham, context={'request': request})
+                response = {
+                    'data': serializer.data
+                }
+                return Response(response)
+            else:
+                response = {
+                    'data': []
+                }
+                return Response(response)
+        except :
+            return Response({'data': []})
+        
+class DonThuocGanNhat(APIView):
+    def get(self, request, format=None):
+        user_id = self.request.query_params.get("user_id")
+        user = User.objects.get(id=user_id)
+        try:
+            don_thuoc = DonThuoc.objects.filter(benh_nhan=user).order_by('-thoi_gian_tao')[0]
+            if don_thuoc:
+                serializer = DonThuocSerializer(don_thuoc, context={'request': request})
+                response = {
+                    'data': serializer.data
+                }
+                return Response(response)
+            else:
+                response = {
+                    'data': []
+                }
+                return Response(response)
+        except :
+            return Response({'data': []})
+        
+
+class TatCaLichHenBenhNhan(APIView):
+    def get(self, request, format=None):
+        user_id = self.request.query_params.get('user_id')
+        user = User.objects.get(id=user_id)
+        now = timezone.localtime(timezone.now())
+        trang_thai = TrangThaiLichHen.objects.get_or_create(ten_trang_thai='Xác Nhận')[0]
+
+        lich_hen = LichHenKham.objects.filter(benh_nhan=user, trang_thai=trang_thai).annotate(relevance=models.Case(
+            models.When(thoi_gian_bat_dau__gte=now, then=1),
+            models.When(thoi_gian_bat_dau__lt=now, then=2),
+            output_field=models.IntegerField(),
+        )).annotate(
+        timediff=models.Case(
+            models.When(thoi_gian_bat_dau__gte=now, then= F('thoi_gian_bat_dau') - now),
+            models.When(thoi_gian_bat_dau__lt=now, then=now - F('thoi_gian_bat_dau')),
+            # models.When(thoi_gian_bat_dau__lte=today_end - F('thoi_gian_bat_dau')),
+            output_field=models.DurationField(),
+        )).order_by('relevance', 'timediff')
+
+        upcoming_events = []
+        past_events = []
+        for lich in lich_hen:
+            if lich.relevance == 1:
+                upcoming_events.append(lich)
+            elif lich.relevance == 2:
+                past_events.append(lich)
+
+        serializer_1 = LichHenKhamSerializer(upcoming_events, many=True, context={'request': request})
+        serializer_2 = LichHenKhamSerializer(past_events, many=True, context={'request': request})
+        response = {
+            'benh_nhan': user_id,
+            'upcoming': serializer_1.data,
+            'past': serializer_2.data,
+        }
+
+        return Response(response)
+
+class DangKiLichHen(APIView):
+    def post(self, request, format=None):
+        serializer = BookLichHenKhamSerializer(data=request.data)
+        if serializer.is_valid():
+            user_id = serializer.validated_data['benh_nhan']
+            thoi_gian_bat_dau = serializer.validated_data['thoi_gian_bat_dau']
+            
+            user = User.objects.get(id=user_id)
+            date_time_str = datetime.strptime(thoi_gian_bat_dau, '%Y-%m-%d %H:%M:%S')
+            trang_thai = TrangThaiLichHen.objects.get_or_create(ten_trang_thai='Đã Đặt Trước')[0]
+            lich_hen = LichHenKham.objects.create(benh_nhan=user, thoi_gian_bat_dau=date_time_str, trang_thai = trang_thai)
+            serializer_1 = LichHenKhamSerializerSimple(lich_hen, context={'request': request})
+            serializer_2 = UserSerializer(user, context={'request': request})
+            response = {
+                'benh_nhan': serializer_2.data,
+                'lich_hen': serializer_1.data,
+            }
+        # response = {
+        #     'message': "oke"
+        # }
+        return Response(response)
+
+class UserInfor(APIView):
+    def get(self, request, format=None):
+        user_id = self.request.query_params.get('user_id')
+        user = User.objects.get(id=user_id)
+        serializer = UserSerializer(user, context={'request': request})
+        response = {
+            'user': serializer.data
+        }
+        return Response(response)
