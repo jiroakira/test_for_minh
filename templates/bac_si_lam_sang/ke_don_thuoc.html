@@ -548,7 +548,9 @@ var KTDatatableRecordSelectionDemo = function() {
                 success: function (response) {
                     if (response.status == 200){
                         toastr.success(response.message, "Thành Công")
-                        window.location = response.url;
+                        setTimeout(function () {
+                            window.location.href = '/bac_si_lam_sang/ket_qua_kham/'; //redirect về danh sách chờ lâm sàng
+                        }, 1500);
                     }
 
                 },

@@ -602,11 +602,13 @@ def store_ke_don(request):
         ma_don_thuoc = subName + '-' + date_time
         trang_thai = TrangThaiDonThuoc.objects.get_or_create(trang_thai="Chờ Thanh Toán")[0]
         don_thuoc = DonThuoc.objects.get_or_create(benh_nhan=user, bac_si_ke_don=request.user, trang_thai=trang_thai, ma_don_thuoc=ma_don_thuoc)[0]
+        trang_thai_lich_hen = TrangThaiLichHen.objects.get_or_create(ten_trang_thai = "Chờ Thanh Toán Hóa Đơn Thuốc")[0]
+        # lich_hen = 
         don_thuoc.save()
 
         for i in data:
             thuoc = Thuoc.objects.only('id').get(id=i['obj']['id'])
-            ke_don_thuoc = KeDonThuoc(don_thuoc=don_thuoc, thuoc=thuoc, so_luong=i['obj']['so_luong'], cach_dung=i['obj']['cach_dung'], ghi_chu=i['obj']['ghi_chu'], bao_hiem=i['obj']['bao_hiem'])
+            ke_don_thuoc = KeDonThuoc(don_thuoc=don_thuoc, thuoc=thuoc, so_luong=i['obj']['so_luong'], cach_dung=i['obj']['duong_dung'], ghi_chu=i['obj']['ghi_chu'], bao_hiem=i['obj']['bao_hiem'])
             bulk_create_data.append(ke_don_thuoc)
 
         KeDonThuoc.objects.bulk_create(bulk_create_data)

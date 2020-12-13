@@ -3,7 +3,7 @@ from medicine.serializers import CongTySerializer, ThuocSerializer
 # from finance.serializers import HoaDonChuoiKhamSerializer, HoaDonThuocSerializer
 from os import set_inheritable
 from django.http.request import validate_host
-from rest_framework import serializers
+from rest_framework import fields, serializers
 from django.contrib.auth import get_user_model
 from .models import (
     DichVuKham, FileKetQua, FileKetQuaChuyenKhoa, KetQuaChuyenKhoa, KetQuaTongQuat, 
@@ -216,20 +216,26 @@ class HoaDonChuoiKhamSerializerSimple(serializers.ModelSerializer):
             'thoi_gian_tao',
         )
 
+
+class DonThuocSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DonThuoc
+        fields = '__all__'
+
 class HoaDonThuocSerializerSimple(serializers.ModelSerializer):
     benh_nhan = UserSerializer()
     bac_si_ke_don = UserSerializer()
-    don_thuoc = HoaDonThuocSerializer(read_only=True, source = 'hoa_don_thuoc')
+    # don_thuoc = DonThuocSerializer()
     class Meta:
         model = DonThuoc
-        fields = (
-            'id',
-            'benh_nhan', 
-            'bac_si_ke_don',
-            'trang_thai',
-            'don_thuoc',
-            'thoi_gian_tao',
-        )
+        # fields = (
+        #     'id',
+        #     'benh_nhan', 
+        #     'bac_si_ke_don',
+        #     'don_thuoc',
+        #     'thoi_gian_tao',
+        # )
+        fields = '__all__'
 
 
 class PhanKhoaKhamDichVuSerializer(serializers.ModelSerializer):

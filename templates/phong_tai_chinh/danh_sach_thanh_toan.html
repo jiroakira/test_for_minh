@@ -589,7 +589,7 @@ var KTDatatableRemoteAjaxDemo = function() {
                 selector: false,
                 textAlign: 'center',
             }, {
-                field: 'don_thuoc.ma_hoa_don',
+                field: 'ma_don_thuoc',
                 title: 'Mã Hóa Đơn',
             }, {
                 field: 'benh_nhan.ho_ten',
@@ -618,8 +618,8 @@ var KTDatatableRemoteAjaxDemo = function() {
                 template: function(row) {
                     var status = {
                         1: {
-                            'title': 'Pending',
-                            'class': ' label-light-success'
+                            'title': 'Chờ Thanh Toán',
+                            'class': ' label-light-warning'
                         },
                         2: {
                             'title': 'Delivered',
@@ -658,7 +658,7 @@ var KTDatatableRemoteAjaxDemo = function() {
                 template: function(row) {
                     
                     return `
-                        <a href="/phong_tai_chinh/hoa_don_thuoc/${row.id}" class="btn btn-sm btn-clean mr-2" title="Edit details">
+                        <a href="/phong_tai_chinh/hoa_don_thuoc/${row.id}" class="btn btn-sm btn-clean mr-2" title="Hóa Đơn Thuốc">
                             Hóa Đơn
                         </a>
                     `;
@@ -704,7 +704,7 @@ var KTDatatableRemoteAjaxDemo = function() {
         // public functions
         init: function() {
             _initDatatable();
-            _initModalLamSang();
+            {% comment %} _initModalLamSang(/); {% endcomment %}
         },
     };
 }();
