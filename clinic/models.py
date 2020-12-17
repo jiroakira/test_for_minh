@@ -339,7 +339,7 @@ class ChuoiKham(models.Model):
     Do chuỗi khám này có tính tích lũy nên bệnh nhân có thể dễ dàng xem lại được lịch sử khám của mình kết hợp với các kết quả khám tại phòng khám """
     benh_nhan = models.ForeignKey(User, on_delete=models.SET(get_sentinel_user), related_name="chuoi_kham")
     bac_si_dam_nhan = models.ForeignKey(User, on_delete=models.SET(get_sentinel_user), related_name="bac_si_chuoi_kham", null=True, blank=True)
-    lich_hen = models.ForeignKey(LichHenKham, on_delete=models.SET_NULL, null=True, blank=True)
+    lich_hen = models.ForeignKey(LichHenKham, on_delete=models.SET_NULL, null=True, blank=True, related_name="danh_sach_chuoi_kham")
     thoi_gian_bat_dau = models.DateTimeField(null=True, blank=True)
     thoi_gian_ket_thuc = models.DateTimeField(null=True, blank=True)
     thoi_gian_tai_kham = models.DateTimeField(null=True, blank=True)

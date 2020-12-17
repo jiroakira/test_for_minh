@@ -2,7 +2,7 @@ from collections import namedtuple
 from django.conf import settings
 from django.contrib.auth import views as auth_views
 from django.db.models import base
-from django.views.generic.base import RedirectView
+from django.views.generic import RedirectView
 from medicine.api import ThuocViewSet, CongTyViewSet
 from os import name
 from django.conf.urls import url
@@ -80,7 +80,7 @@ chuoi_kham = ChuoiKhamViewSet.as_view(
 )
 
 urlpatterns = [
-    path('', include(router.urls)),
+    # path('', include(router.urls)),
 
     # * API
     path('api/nguoi_dung/<int:pk>/', nguoi_dung, name='nguoi_dung'),
@@ -131,8 +131,8 @@ urlpatterns = [
     path('api/danh_sach_doanh_thu_dich_vu/', DanhSachDoanhThuDichVu.as_view(), name='danh_sach_doanh_thu_dich_vu'),
     path('api/danh_sach_doanh_thu_thuoc/', DanhSachDoanhThuThuoc.as_view(), name='danh_sach_daonh_thu_thuoc'),
     # * VIEW
-    path('', RedirectView.as_view(url='index/', permanent=True), name='index'),
-    path('index/', index, name='index'),
+    path('', RedirectView.as_view(url="index/"), name='home'),
+    path('index/', index, name="index"),
     path('danh_sach_benh_nhan/', danh_sach_benh_nhan, name='danh_sach_benh_nhan'),
     path('danh_sach_benh_nhan/<int:id>/cap_nhat_thong_tin_benh_nhan', update_benh_nhan, name="update_benh_nhan"),
     path('cap_nhat_thong_tin_benh_nhan/', cap_nhat_thong_tin_benh_nhan, name="cap_nhat_thong_tin_benh_nhan"),
